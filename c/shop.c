@@ -130,7 +130,7 @@ void printCustomer(struct Customer* c, struct Shop* s)
 	for(int i = 0; i < c->index; i++)
 	{
 		printf("PRODUCT NAME: %s \nQUANTITY REQUIRED: %d\n", c->shoppingList[i].product.name, c->shoppingList[i].quantity);
-		printf("\n------------------------------");
+		printf("\n------------------------------\n");
 	}
 }
 
@@ -150,7 +150,6 @@ void printCurrentStock(struct Shop* s)
 struct Shop processingOrder(struct Customer* c, struct Shop* s) {
 	
 	// variables to be used for processing order
-	// double totalCostForCustomer = 0.00;
 	double shopCash = 0.00;
 	double startingBudget = c->budget;
 	double finalCost = 0.00;
@@ -177,7 +176,7 @@ struct Shop processingOrder(struct Customer* c, struct Shop* s) {
 				if (s->stock[j].quantity >= c->shoppingList[i].quantity) {
 					quantitySingleProductCost = s->stock[j].product.price * c->shoppingList[i].quantity;
 
-						// If customer budget can afford total cost of available shopping items
+						// If customer budget can afford cost of shopping item in required quantity
 						if (c->budget >= quantitySingleProductCost){
 							s->cash += quantitySingleProductCost;
                         	c->budget -= quantitySingleProductCost;
@@ -196,7 +195,7 @@ struct Shop processingOrder(struct Customer* c, struct Shop* s) {
 					}
 					// If stock in shop is less than customer requires
 					if (shopStock < custRequires){
-						printf("\nPRODUCT NAME: %s\nSTOCK AVAILABLE FOR SALE: %d\n", c->shoppingList[i].product.name, s->stock[j].quantity);
+						printf("\nPRODUCT NAME: %s\nSTOCK AVAILABLE: %d\n", c->shoppingList[i].product.name, s->stock[j].quantity);
 
                     	quantitySingleProductCost = s->stock[j].product.price * s->stock[j].quantity;
 
@@ -219,11 +218,7 @@ struct Shop processingOrder(struct Customer* c, struct Shop* s) {
 		printf("\n------------------------------");
 		}
 
-		if (c->budget <= 0.00) {
-			printf("\nTRANSACTION CANCELLED\n");
-		}
-
-	// If customer budget covers total cost for processed order
+	// If customer budget has changed after processing order
 	// print total cost to customer and shop cash balance
 	if (c->budget <= startingBudget) {
 		finalCost = startingBudget - c->budget;
